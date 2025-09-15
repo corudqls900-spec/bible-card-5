@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>빛의 길을 따라 가는 사람들</title>
+  <title>빛의 길을 따라 가는 사람들들</title>
 
   <style>
     body {
@@ -30,7 +30,7 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
     }
 
     .card.flipped .card-inner {
@@ -60,6 +60,12 @@
       transform: rotateY(180deg);
     }
 
+    /* 꾹 누름 시 시각 효과 */
+    .pressed {
+      filter: brightness(0.7) contrast(1.2);
+      transform: scale(0.97);
+    }
+
     /* 안내문구 */
     .hint {
       margin-top: 16px;
@@ -67,7 +73,7 @@
       color: #555;
       text-align: center;
       line-height: 1.5;
-      max-width: 85mm; /* 카드 폭에 맞게 */
+      max-width: 85mm;
     }
 
     @media (max-width: 480px) {
@@ -88,16 +94,50 @@
       </div>
     </div>
 
-    <!-- 항상 보이는 안내 문구 -->
     <div class="hint">
-      카드를 눌러 간단히 정보를 입력하면<br>
-      상품을 받을 수 있습니다 
+     카드를 눌러 간단히 정보를 입력하면<br>
+     상품을 받을 수 있습니다 
     </div>
   </div>
 
   <script>
     const card = document.getElementById('card');
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    const url = "https://naver.me/FDGNKOFI"; // 이동할 사이트
+    let timer;
+    let isLongPress = false;
+
+    // 카드 뒤집기
+    card.addEventListener('click', (e) => {
+      if (!isLongPress) card.classList.toggle('flipped');
+      isLongPress = false;
+      card.classList.remove('pressed'); // 눌림 효과 해제
+    });
+
+    // 모바일 터치 & PC 마우스 공통 함수
+    const startPress = () => {
+      card.classList.add('pressed'); // 눌림 시각 효과
+      timer = setTimeout(() => {
+        isLongPress = true;
+        window.open(url, "_blank");
+        card.classList.remove('pressed'); // 이동 후 해제
+      }, 500); // 0.5초 이상 꾹 눌러야 이동
+    };
+
+    const cancelPress = () => {
+      clearTimeout(timer);
+      card.classList.remove('pressed');
+    };
+
+    // 모바일
+    card.addEventListener('touchstart', startPress);
+    card.addEventListener('touchend', cancelPress);
+    card.addEventListener('touchcancel', cancelPress);
+
+    // PC
+    card.addEventListener('mousedown', startPress);
+    card.addEventListener('mouseup', cancelPress);
+    card.addEventListener('mouseleave', cancelPress);
   </script>
+
 </body>
 </html>
