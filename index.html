@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>빛의 길을 따라 가는 사람들들</title>
+
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .card-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: -30px;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+    }
+
+    .card {
+      width: 55mm;
+      height: 85mm;
+      perspective: 1000px;
+      cursor: pointer;
+      position: relative;
+      margin-bottom: 40px;
+
+      /* 길게 눌러도 복사/공유 메뉴 방지 */
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      background-size: cover;
+      background-position: center;
+      transition: filter 0.2s, transform 0.2s;
+    }
+
+    .card-front {
+      background-image: url('images/front-5.png');
+      filter: brightness(0.85) contrast(1.1);
+    }
+
+    .card-back {
+      background-image: url('images/back-5.png');
+      filter: brightness(0.85) contrast(1.1);
+      transform: rotateY(180deg);
+    }
+
+    .pressed {
+      filter: brightness(0.6) contrast(1.2);
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-container">
+    <div class="card" id="card">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back"></div>
+      </div>
+    </div>
+    <div class="hint">카드를 꾹 눌러 상품 수령을 위해 간단한 정보를 입력해 주세요.</div>
+  </div>
+
+  <script>
+    const card = document.getElementById('card');
+    let touchTimer;
+    let touchStartTime;
+
+    // PC 클릭 → 카드 뒤집기
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+
+    // 모바일 터치
+    card.addEventListener('touchstart', function(e) {
+      e.preventDefault(); // 브라우저 기본 메뉴 방지
+      touchStartTime = Date.now();
+      card.classList.add('pressed');
+
+      touchTimer = setTimeout(() => {
+        window.location.href = 'https://example.com'; // 이동할 URL
+      }, 500); // 0.5초 이상 누르면 이동
+    }, {passive: false});
+
+    card.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      clearTimeout(touchTimer);
+      card.classList.remove('pressed');
+
+      const touchDuration = Date.now() - touchStartTime;
+      if (touchDuration < 300) { // 0.3초 이하 = 짧게 터치 → 뒤집기
+        card.classList.toggle('flipped');
+      }
+    }, {passive: false});
+
+    card.addEventListener('touchcancel', function(e) {
+      e.preventDefault();
+      clearTimeout(touchTimer);
+      card.classList.remove('pressed');
+    }, {passive: false});
+  </script>
+</body>
+</html>
