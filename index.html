@@ -23,11 +23,10 @@
       perspective: 1000px;
       margin-top: 20px;
       cursor: pointer;
-
-      /* 모바일 길게 눌러도 선택/복사 메뉴 방지 */
-      user-select: none;
+      user-select: none; /* 모바일에서 선택 방지 */
       -webkit-user-select: none;
       touch-action: manipulation;
+      position: relative;
     }
 
     .card-inner {
@@ -65,13 +64,11 @@
       transform: rotateY(180deg);
     }
 
-    /* 꾹 누름 시 시각 효과 */
     .pressed {
       filter: brightness(0.7) contrast(1.2);
       transform: scale(0.97);
     }
 
-    /* 안내문구 */
     .hint {
       margin-top: 16px;
       font-size: 14px;
@@ -107,7 +104,7 @@
 
   <script>
     const card = document.getElementById('card');
-    const url ='https://naver.me/FDGNKOFI'; // 이동할 사이트
+    const finalUrl = "https://naver.me/FDGNKOFI"; // 최종 웹사이트 URL
     let timer;
     let isLongPress = false;
 
@@ -115,17 +112,17 @@
     card.addEventListener('click', (e) => {
       if (!isLongPress) card.classList.toggle('flipped');
       isLongPress = false;
-      card.classList.remove('pressed'); // 눌림 효과 해제
+      card.classList.remove('pressed');
     });
 
-    // 모바일 터치 & PC 마우스 공통 함수
+    // 꾹 누름 기능
     const startPress = () => {
-      card.classList.add('pressed'); // 눌림 시각 효과
+      card.classList.add('pressed');
       timer = setTimeout(() => {
         isLongPress = true;
-        window.open(url, "_blank");
-        card.classList.remove('pressed'); // 이동 후 해제
-      }, 500); // 0.5초 이상 꾹 눌러야 이동
+        window.location.href = finalUrl; // 동일 사이트로 이동
+        card.classList.remove('pressed');
+      }, 800); // 0.8초 이상
     };
 
     const cancelPress = () => {
