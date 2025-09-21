@@ -17,6 +17,12 @@
       font-family: 'Noto Sans KR', sans-serif;
     }
 
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .card {
       width: 55mm;
       height: 85mm;
@@ -50,7 +56,11 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       background-size: cover;
       background-position: center;
-      transition: filter 0.2s, transform 0.2s;
+      display: flex; 
+      align-items: center;   /* 세로 중앙 정렬 */
+      justify-content: center; /* 가로 중앙 정렬 */
+      text-align: center;
+      padding: 10px;
     }
 
     .card-front {
@@ -62,6 +72,22 @@
       background-image: url('images/back-5.png');
       filter: brightness(0.9) contrast(1.1);
       transform: rotateY(180deg);
+    }
+
+    .card-text {
+      font-family: "Times New Roman","명조체", serif;
+      font-size: 12px;
+      color: #333; 
+      background: rgba(255, 255, 255, 0.6);
+      padding: 4px 8px;
+      border-radius: 8px;
+      line-height: 1.4;
+      max-width: 90%;
+      overflow-wrap: break-word; /*글자 넘침 방지 */
+    }
+
+    .card-text .highlight {
+      font-weight: bold;
     }
 
     .pressed {
@@ -91,8 +117,43 @@
   <div class="card-container">
     <div class="card" id="card">
       <div class="card-inner">
-        <div class="card-face card-front"></div>
-        <div class="card-face card-back"></div>
+        <!-- 앞면 -->
+        <div class="card-face card-front">
+          <div class="card-text">
+            그러나 너희는 택하신 족속이요<br>
+            왕 같은 제사장들이요<br>
+            거룩한 나라요<br>
+            그의 소유된 백성이니<br>
+            이는 너희를 어두운 데서<br>
+            <span class="highlight">불러내어</span><br>
+            기이한 빛에 들어가게 하신 이의<br>
+            아름다운 덕을<br>
+            <span class="highlight">선포하게 하려 하심이라<br><br>
+            (벧전 2:9)
+          </div>
+        </div>
+
+        <!-- 뒷면 -->
+        <div class="card-face card-back">
+          <div class="card-text">
+            이제 여정을 마친 여러분은<br>
+            세상의 수 많은 사람들<br>
+            가운데 특별히 불르심을 받은<br>
+            하나님의 선택된 백성입니다<br><br>
+            어둠을 향해 나아가는 세상 속에서,<br>
+            주님은 여러분을 빛으로 세워<br>
+            그분의 아름다운 덕을<br>
+            선포하게 하셨습니다.<br><br>
+            부르심을 따라가는 그 길이<br>
+            때로는 외롭고 힘들지라도,<br>
+            당신의 걸음마다 주님이 함께하시며<br>
+            그 눈물조차 빛으로 바꾸실 것입니다.<br><br>
+            그러니 이제 담대히 나아가십시오.<br>
+            당신의 삶 전체가<br>
+            하나님의 영광을 드러내는<br>
+            거룩한 등불이 되기를 축복합니다.<br>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -104,7 +165,7 @@
 
   <script>
     const card = document.getElementById('card');
-    const finalUrl = "https://naver.me/FDGNKOFI"; // 최종 웹사이트 URL
+    const finalUrl = "https://naver.me/FDGNKOFI"; // 이동할 사이트
     let timer;
     let isLongPress = false;
 
@@ -120,9 +181,9 @@
       card.classList.add('pressed');
       timer = setTimeout(() => {
         isLongPress = true;
-        window.location.href = finalUrl; // 동일 사이트로 이동
+        window.location.href = finalUrl;
         card.classList.remove('pressed');
-      }, 800); // 0.8초 이상
+      }, 500); // 0.5초
     };
 
     const cancelPress = () => {
