@@ -24,8 +24,8 @@
     }
 
     .card {
-      width: 70mm;   /* 카드 전체 키우기 */
-      height: 105mm; /* 카드 전체 키우기 */
+      width: 70mm;
+      height: 105mm;
       perspective: 1000px;
       margin-top: 20px;
       cursor: pointer;
@@ -74,25 +74,24 @@
       transform: rotateY(180deg);
     }
 
-    /* 글자 스타일 */
-    .card-text {
+    /* 앞면 텍스트 박스 크게, 글자 조금 키움 */
+    .card-front .card-text {
       font-family: "Times New Roman","명조체", serif;
-      font-size: 14px;  /* 앞면 글자 기본 */
+      font-size: 15px;  /* 글자 조금 키움 */
       color: #333;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 6px 10px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7); /* 앞면 투명도 조금 더 높임 */
+      padding: 10px 12px;  /* 박스 여유 공간 키움 */
+      border-radius: 10px;
       line-height: 1.6;
-      max-width: 90%;
+      max-width: 95%;
       overflow-wrap: break-word;
     }
 
-    /* 앞면 키워드 강조 */
     .card-text .highlight-front {
       font-weight: bold;
     }
 
-    /* 뒷면 글자 작게 */
+    /* 뒷면 그대로 */
     .card-back .card-text {
       font-size: 12px;
       line-height: 1.4;
@@ -105,10 +104,9 @@
       transform: scale(0.97);
     }
 
-    /* 안내문 위치 조정 */
     .hint {
       margin-top: 20px;
-      font-size: 15px;  /* 글자 살짝 키움 */
+      font-size: 15px;
       color: #555;
       text-align: center;
       line-height: 1.5;
@@ -185,14 +183,12 @@
     let timer;
     let isLongPress = false;
 
-    // 카드 뒤집기
     card.addEventListener('click', (e) => {
       if (!isLongPress) card.classList.toggle('flipped');
       isLongPress = false;
       card.classList.remove('pressed');
     });
 
-    // 꾹 누름 기능
     const startPress = () => {
       card.classList.add('pressed');
       timer = setTimeout(() => {
@@ -207,12 +203,9 @@
       card.classList.remove('pressed');
     };
 
-    // 모바일
     card.addEventListener('touchstart', startPress);
     card.addEventListener('touchend', cancelPress);
     card.addEventListener('touchcancel', cancelPress);
-
-    // PC
     card.addEventListener('mousedown', startPress);
     card.addEventListener('mouseup', cancelPress);
     card.addEventListener('mouseleave', cancelPress);
